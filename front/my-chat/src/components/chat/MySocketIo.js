@@ -16,12 +16,5 @@ const  onDisconnect = () => {
 socket.on('connect', onConnect);
 socket.on('disconnect', onDisconnect);
 
-socket.on('new_user_connection', (data) => {
-    toast.info('New User: ' + data.socket_id);
-})
-
-socket.on('new_message', (data) => {
-    toast.info('New Message: ' + data);
-})
 
 export default socket;

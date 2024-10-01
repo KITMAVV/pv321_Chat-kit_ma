@@ -5,7 +5,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 
 const httpServer = createServer();
-const io =
+const allSocketServer =
     new Server(httpServer, {
     cors: {
         origin: "*"
@@ -14,21 +14,21 @@ const io =
 
 
 // Обработка подключения клиента
-io.on("connection", (socket) => {
-    console.log(`User connected: ${socket.id}`);
+allSocketServer.on("connection",
+    (oneUserSocket) => {
+    console.log(`User connected: ${oneUserSocket.id}`);
 
     // Сообщить всем - что кто то открыл страницу
-    io.emit('new_user_connection', {socket_id: socket.id})
+    allSocketServer.emit('new_user_connection', {socket_id: oneUserSocket.id})
 
     // Обработка сообщения от клиента - его пересылка всем, кто подключен
-    socket.on('new_message', (data) => {
-        io.emit('new_message', data);
+    oneUserSocket.on('new_message', (data) => {
+        allSocketServer.emit('new_message', data);
     })
 
-
     // Обработка отключения клиента
-    socket.on("disconnect", () => {
-        console.log(`User disconnected: ${socket.id}`);
+    oneUserSocket.on("disconnect", () => {
+        console.log(`User disconnected: ${oneUserSocket.id}`);
     });
 });
 
