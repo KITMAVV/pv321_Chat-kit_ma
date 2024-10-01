@@ -6,7 +6,11 @@ export default function ChatMessageItem (props) {
 
     return(
         <>
-            <li>{props.message}</li>
+            <li>
+                <small>{(new Date(props.message.createdAt)).toLocaleString()} </small>
+                <strong>{props.message.name} :</strong>
+                {props.message.msg}
+            </li>
         </>
     )
 }

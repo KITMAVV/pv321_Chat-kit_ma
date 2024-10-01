@@ -14,6 +14,17 @@ export default function ChatWrapper () {
             console.log(data)
             setMessages(prevMessages => [...prevMessages, data]);
         })
+
+        socket.on('new_user_connection', (data) => {
+            const msg = {
+                name: data.name,
+                createdAt: data.connectedAt,
+                msg: " Welcome New User "
+            }
+            setMessages(prevMessages => [...prevMessages, msg]);
+
+        })
+
     },[])
 
 

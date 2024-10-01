@@ -17,13 +17,28 @@ const allSocketServer =
 allSocketServer.on("connection",
     (oneUserSocket) => {
     console.log(`User connected: ${oneUserSocket.id}`);
+    // Створити імя
+        oneUserSocket.name = oneUserSocket.id;
+
+        const newUser = {
+            name: oneUserSocket.name,
+            connectedAt: Date.now()
+        }
 
     // Сообщить всем - что кто то открыл страницу
-    allSocketServer.emit('new_user_connection', {socket_id: oneUserSocket.id})
+    allSocketServer.emit('new_user_connection',newUser )
+
 
     // Обработка сообщения от клиента - его пересылка всем, кто подключен
     oneUserSocket.on('new_message', (data) => {
-        allSocketServer.emit('new_message', data);
+
+        const msg = {
+            name: oneUserSocket.name,
+            msg: data,
+            createdAt: Date.now()
+        }
+
+        allSocketServer.emit('new_message', msg);
     })
 
     // Обработка отключения клиента
