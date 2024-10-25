@@ -1,16 +1,16 @@
-import {useState} from "react";
-import ChatMessageForm from "./ChatMessageForm";
+import socket from "./MySocketIo";
 
-export default function ChatMessageItem (props) {
+export default function ChatMessageItem({ message }) {
+    const isOwnMessage = message.userId === socket.id;
+    const isSystemMessage = message.name === 'System';
 
-
-    return(
-        <>
-            <li>
-                <small>{(new Date(props.message.createdAt)).toLocaleString()} </small>
-                <strong>{props.message.name} :</strong>
-                {props.message.msg}
-            </li>
-        </>
-    )
+    return (
+        <li className={`chat-bubble ${isSystemMessage ? "system-message" : (isOwnMessage ? "own-message" : "other-message")}`}>
+            <div className="chat-content">
+                <strong>{isSystemMessage ? "System" : (isOwnMessage ? "You" : message.name)} :</strong>
+                <p>{message.msg}</p>
+                <small>{(new Date(message.createdAt)).toLocaleString()}</small>
+            </div>
+        </li>
+    );
 }
